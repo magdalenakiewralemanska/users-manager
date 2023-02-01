@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -45,9 +46,9 @@ public class User implements Serializable {
     @Column(name = "registration_date")
     private Date registrationDate;
 
-    @Column(name = "roles_permissions")
-    private String[] rolesPermissions;
-    private String[] authorities;
+    @Column(name = "role_permissions")
+    private String rolePermissions;
+    private List<String > authorities;
 
     @Column(name = "active_account")
     private boolean isActive;
