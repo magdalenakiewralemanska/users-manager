@@ -25,22 +25,25 @@ public class SecurityConfig {
     private final AuthenticationForbiddenMessage forbiddenMessage;
     private final AccessDeniedMessage accessDeniedMessage;
     private final UserServiceImpl userService;
-    private final BCryptPasswordEncoder passwordEncoder;
 
     public SecurityConfig(AuthorizationFilter authorizationFilter, AuthenticationForbiddenMessage forbiddenMessage,
-                          AccessDeniedMessage accessDeniedMessage, UserServiceImpl userService, BCryptPasswordEncoder passwordEncoder) {
+                          AccessDeniedMessage accessDeniedMessage, UserServiceImpl userService) {
         this.authorizationFilter = authorizationFilter;
         this.forbiddenMessage = forbiddenMessage;
         this.accessDeniedMessage = accessDeniedMessage;
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userService)
-                .passwordEncoder(passwordEncoder).and().build();
+                .passwordEncoder(passwordEncoder()).and().build();
     }
 
     @Bean
@@ -53,11 +56,6 @@ public class SecurityConfig {
                 .authenticationEntryPoint(forbiddenMessage)
                 .and().addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
     }
 
 }

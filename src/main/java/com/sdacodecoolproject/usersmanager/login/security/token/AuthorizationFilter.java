@@ -32,7 +32,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.OK.value());
         } else {
             String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if(authHeader == null || authHeader.startsWith(SecurityConstant.TOKEN_FRONT)){
+            if(authHeader == null || !authHeader.startsWith(SecurityConstant.TOKEN_FRONT)){
                 filterChain.doFilter(request, response);
                 return;
             }
