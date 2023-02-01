@@ -9,5 +9,4 @@ public class SecurityConstant {
     public static final String NOT_VERIFIED_TOKEN = "Token not verified";
 
 
-
 }

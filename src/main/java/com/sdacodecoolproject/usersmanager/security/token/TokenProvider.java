@@ -6,9 +6,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.sdacodecoolproject.usersmanager.constant.SecurityConstant;
 import com.sdacodecoolproject.usersmanager.model.CurrentUser;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,11 +35,12 @@ public class TokenProvider {
                 .sign(Algorithm.HMAC256(secret.getBytes()));
     }
 
-    public List<GrantedAuthority> getAuthorities(String token){
-        List<String> claims = getClaimsFromToken(token);
-        return claims.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+    private static String[] getClaimsFromUser(CurrentUser currentUser) {
+        List<String> authorities = new ArrayList<>();
+        for(GrantedAuthority grantedAuthority: currentUser.getAuthorities()){
+            authorities.add(grantedAuthority.getAuthority());
+        }
+        return authorities.toArray(new String[0]);
     }
 
     private static List<String> getClaimsFromToken(String token) {
@@ -42,6 +48,20 @@ public class TokenProvider {
         return verifier.verify(token)
                 .getClaim(SecurityConstant.AUTHORITIES)
                 .asList(String.class);
+    }
+
+    public List<GrantedAuthority> getAuthorities(String token){
+        List<String> claims = getClaimsFromToken(token);
+        return claims.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    public Authentication getAuthentication(String username, List<GrantedAuthority> authorities, HttpServletRequest request){
+        UsernamePasswordAuthenticationToken usernamePassAuthToken =
+                new UsernamePasswordAuthenticationToken(username, null, authorities);
+        usernamePassAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        return usernamePassAuthToken;
     }
 
     private static JWTVerifier getVerifier() {
@@ -55,12 +75,20 @@ public class TokenProvider {
         return verifier;
     }
 
-    private static String[] getClaimsFromUser(CurrentUser currentUser) {
-        List<String> authorities = new ArrayList<>();
-        for(GrantedAuthority grantedAuthority: currentUser.getAuthorities()){
-            authorities.add(grantedAuthority.getAuthority());
-        }
-        return authorities.toArray(new String[0]);
+    public boolean isTokenValid(String username, String token){
+        JWTVerifier verifier = getVerifier();
+        return StringUtils.isNoneEmpty(username) && isTokenExpired(token, verifier);
     }
+
+    private static boolean isTokenExpired(String token, JWTVerifier verifier) {
+        Date expiration = verifier.verify(token).getExpiresAt();
+        return expiration.before(new Date());
+    }
+
+
+
+
+
+
 
 }
