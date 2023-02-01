@@ -1,5 +1,5 @@
 jwt:
-  secret: 'Kocia@szajkA^i**ZaGaDka123!Znikn--iec90(iasle$$d&z][i'
+  secret: "Kocia@szajkA^i**ZaGaDka123!Znikn--iec90(iasle$$d&z][i"
 
 server:
   port: 8081
