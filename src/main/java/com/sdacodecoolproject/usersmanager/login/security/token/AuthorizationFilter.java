@@ -1,6 +1,6 @@
-package com.sdacodecoolproject.usersmanager.security.token;
+package com.sdacodecoolproject.usersmanager.login.security.token;
 
-import com.sdacodecoolproject.usersmanager.constant.SecurityConstant;
+import com.sdacodecoolproject.usersmanager.login.constant.SecurityConstant;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

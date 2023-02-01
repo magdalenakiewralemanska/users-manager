@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.model;
+package com.sdacodecoolproject.usersmanager.login.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

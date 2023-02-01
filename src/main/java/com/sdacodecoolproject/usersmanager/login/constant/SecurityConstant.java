@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.constant;
+package com.sdacodecoolproject.usersmanager.login.constant;
 
 public class SecurityConstant {
 

@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.model;
+package com.sdacodecoolproject.usersmanager.login.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

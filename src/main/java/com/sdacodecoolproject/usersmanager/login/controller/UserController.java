@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.controller;
+package com.sdacodecoolproject.usersmanager.login.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

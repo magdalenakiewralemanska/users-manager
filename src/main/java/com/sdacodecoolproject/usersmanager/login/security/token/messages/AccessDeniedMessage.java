@@ -1,8 +1,8 @@
-package com.sdacodecoolproject.usersmanager.security.token;
+package com.sdacodecoolproject.usersmanager.login.security.token.messages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sdacodecoolproject.usersmanager.constant.SecurityConstant;
-import com.sdacodecoolproject.usersmanager.model.HttpResponse;
+import com.sdacodecoolproject.usersmanager.login.constant.SecurityConstant;
+import com.sdacodecoolproject.usersmanager.login.model.HttpResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
