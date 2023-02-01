@@ -14,12 +14,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@Component
 public class TokenProvider {
     @Value(value = "jwt.secret")
     private static String secret;
@@ -77,7 +80,7 @@ public class TokenProvider {
 
     public boolean isTokenValid(String username, String token){
         JWTVerifier verifier = getVerifier();
-        return StringUtils.isNoneEmpty(username) && isTokenExpired(token, verifier);
+        return StringUtils.isNoneEmpty(username) && !isTokenExpired(token, verifier);
     }
 
     private static boolean isTokenExpired(String token, JWTVerifier verifier) {
@@ -85,10 +88,8 @@ public class TokenProvider {
         return expiration.before(new Date());
     }
 
-
-
-
-
-
-
+    public String getSubject(String token){
+        JWTVerifier verifier = getVerifier();
+        return verifier.verify(token).getSubject();
+    }
 }
