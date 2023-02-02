@@ -1,5 +1,8 @@
 package com.sdacodecoolproject.usersmanager.login.service;
 
+import com.sdacodecoolproject.usersmanager.login.exception.EmailExistException;
+import com.sdacodecoolproject.usersmanager.login.exception.UserNotFoundException;
+import com.sdacodecoolproject.usersmanager.login.exception.UsernameExistException;
 import com.sdacodecoolproject.usersmanager.login.model.CurrentUser;
 import com.sdacodecoolproject.usersmanager.login.model.Role;
 import com.sdacodecoolproject.usersmanager.login.repository.UserRepository;
@@ -48,7 +51,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User register(String firstName, String lastName, String email, String username) throws Exception {
+    public User register(String firstName, String lastName, String email, String username)
+            throws UserNotFoundException, EmailExistException, UsernameExistException {
         validateUsernameAndEmail(StringUtils.EMPTY, username, email);
         User user = new User();
         user.setUserIdNumber(generateUserId());
@@ -64,7 +68,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setRolePermissions(Role.ROLE_USER.name());
         user.setAuthorities(Role.ROLE_USER.getAuthorities());
         user.setImageUrl(getImageUrl());
-        return userRepository.save(user);
+        userRepository.save(user);
+        logger.info("New user password: " + password);
+        return user;
     }
 
     @Override
@@ -96,32 +102,42 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return RandomStringUtils.randomNumeric(15);
     }
 
-    private void validateUsernameAndEmail(String currentUsername, String newUsername, String email) throws Exception {
+    private void validateUsernameAndEmail(String currentUsername, String newUsername, String email) throws
+            UserNotFoundException, UsernameExistException, EmailExistException {
         if(StringUtils.isNotBlank(currentUsername)) {
             User currentUser = checkThatUserExists(currentUsername);
             checkThatUsernameNotRepeat(newUsername, currentUser);
             checkThatEmailNotRepeat(email, currentUser);
+        } else {
+            User userByUsername = findUserByUsername(newUsername);
+            if(userByUsername != null){
+                throw new UsernameExistException("This username already exists. Choose another one.");
+            }
+            User userByEmail = findUserByEmail(email);
+            if(userByEmail != null){
+                throw new EmailExistException("Email already exists");
+            }
         }
     }
 
-    private void checkThatEmailNotRepeat(String email, User currentUser) throws Exception {
+    private void checkThatEmailNotRepeat(String email, User currentUser) throws EmailExistException {
         User userByEmail = findUserByEmail(email);
-        if(userByEmail != null){
-            throw  new Exception("Email already exists");
+        if(userByEmail != null && !currentUser.getId().equals(userByEmail.getId())){
+            throw new EmailExistException("Email already exists");
         }
     }
 
-    private void checkThatUsernameNotRepeat(String newUsername, User currentUser) throws Exception {
-        User newUser = findUserByUsername(newUsername);
-        if(newUser != null){
-            throw new Exception("Username already exists");
+    private void checkThatUsernameNotRepeat(String newUsername, User currentUser) throws UsernameExistException {
+        User userByUsername = findUserByUsername(newUsername);
+        if(userByUsername != null && !currentUser.getId().equals(userByUsername.getId())){
+            throw new UsernameExistException("This username already exists. Choose another one.");
         }
     }
 
-    private User checkThatUserExists(String currentUsername) {
+    private User checkThatUserExists(String currentUsername) throws UserNotFoundException{
         User currentUser = findUserByUsername(currentUsername);
         if(currentUser == null){
-            throw new UsernameNotFoundException("Username " + currentUsername + " not found");
+            throw new UserNotFoundException("Username " + currentUsername + " not found");
         }
         return currentUser;
     }
