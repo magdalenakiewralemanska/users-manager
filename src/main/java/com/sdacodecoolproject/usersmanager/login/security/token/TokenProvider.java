@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider {
-    @Value(value = "${jwt.secret}")
-    private static String secret;
+    @Value("${jwt.secret}")
+    private String secret;
 
     public String generateToken(CurrentUser currentUser){
         String[] claims = getClaimsFromUser(currentUser);
@@ -38,7 +38,7 @@ public class TokenProvider {
                 .sign(Algorithm.HMAC256(secret.getBytes()));
     }
 
-    private static String[] getClaimsFromUser(CurrentUser currentUser) {
+    private String[] getClaimsFromUser(CurrentUser currentUser) {
         List<String> authorities = new ArrayList<>();
         for(GrantedAuthority grantedAuthority: currentUser.getAuthorities()){
             authorities.add(grantedAuthority.getAuthority());
@@ -46,7 +46,7 @@ public class TokenProvider {
         return authorities.toArray(new String[0]);
     }
 
-    private static List<String> getClaimsFromToken(String token) {
+    private List<String> getClaimsFromToken(String token) {
         JWTVerifier verifier = getVerifier();
         return verifier.verify(token)
                 .getClaim(SecurityConstant.AUTHORITIES)
@@ -67,7 +67,7 @@ public class TokenProvider {
         return usernamePassAuthToken;
     }
 
-    private static JWTVerifier getVerifier() {
+    private JWTVerifier getVerifier() {
         JWTVerifier verifier;
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -83,7 +83,7 @@ public class TokenProvider {
         return StringUtils.isNoneEmpty(username) && !isTokenExpired(token, verifier);
     }
 
-    private static boolean isTokenExpired(String token, JWTVerifier verifier) {
+    private boolean isTokenExpired(String token, JWTVerifier verifier) {
         Date expiration = verifier.verify(token).getExpiresAt();
         return expiration.before(new Date());
     }
