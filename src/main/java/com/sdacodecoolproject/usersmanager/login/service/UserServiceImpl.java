@@ -1,5 +1,6 @@
 package com.sdacodecoolproject.usersmanager.login.service;
 
+import com.sdacodecoolproject.usersmanager.login.constant.UserImplConstant;
 import com.sdacodecoolproject.usersmanager.login.exception.EmailExistException;
 import com.sdacodecoolproject.usersmanager.login.exception.UserNotFoundException;
 import com.sdacodecoolproject.usersmanager.login.exception.UsernameExistException;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,15 +39,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public CurrentUser loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username);
         if(user == null){
-            logger.error("User not found");
-            throw new UsernameNotFoundException("User not found");
+            logger.error(UserImplConstant.NO_USER_FOUND_BY_USERNAME + username);
+            throw new UsernameNotFoundException(UserImplConstant.NO_USER_FOUND_BY_USERNAME + username);
         } else {
             user.setLastLoginDisplay(user.getLastLoginDate());
             user.setLastLoginDate(new Date());
             userRepository.save(user);
+            logger.info(UserImplConstant.FOUND_USER_BY_USERNAME + username);
             return new CurrentUser(user);
         }
     }
@@ -75,17 +78,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<User> getUsers() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
     public User findUserByUsername(String username) {
-        return null;
+        return userRepository.findUserByUsername(username);
     }
 
     @Override
     public User findUserByEmail(String email) {
-        return null;
+        return userRepository.findUserByEmail(email);
     }
 
     private String getImageUrl() {
@@ -111,11 +114,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else {
             User userByUsername = findUserByUsername(newUsername);
             if(userByUsername != null){
-                throw new UsernameExistException("This username already exists. Choose another one.");
+                throw new UsernameExistException(UserImplConstant.USERNAME_ALREADY_EXISTS);
             }
             User userByEmail = findUserByEmail(email);
             if(userByEmail != null){
-                throw new EmailExistException("Email already exists");
+                throw new EmailExistException(UserImplConstant.EMAIL_ALREADY_EXISTS);
             }
         }
     }
@@ -123,14 +126,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private void checkThatEmailNotRepeat(String email, User currentUser) throws EmailExistException {
         User userByEmail = findUserByEmail(email);
         if(userByEmail != null && !currentUser.getId().equals(userByEmail.getId())){
-            throw new EmailExistException("Email already exists");
+            throw new EmailExistException(UserImplConstant.EMAIL_ALREADY_EXISTS);
         }
     }
 
     private void checkThatUsernameNotRepeat(String newUsername, User currentUser) throws UsernameExistException {
         User userByUsername = findUserByUsername(newUsername);
         if(userByUsername != null && !currentUser.getId().equals(userByUsername.getId())){
-            throw new UsernameExistException("This username already exists. Choose another one.");
+            throw new UsernameExistException(UserImplConstant.USERNAME_ALREADY_EXISTS);
         }
     }
 
