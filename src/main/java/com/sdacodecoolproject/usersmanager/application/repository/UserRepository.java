@@ -1,7 +1,7 @@
-package com.sdacodecoolproject.usersmanager.login.repository;
+package com.sdacodecoolproject.usersmanager.application.repository;
 
 
-import com.sdacodecoolproject.usersmanager.login.model.User;
+import com.sdacodecoolproject.usersmanager.application.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

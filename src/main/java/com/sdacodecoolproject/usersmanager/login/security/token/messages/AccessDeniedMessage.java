@@ -1,8 +1,8 @@
 package com.sdacodecoolproject.usersmanager.login.security.token.messages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sdacodecoolproject.usersmanager.login.constant.SecurityConstant;
-import com.sdacodecoolproject.usersmanager.login.model.HttpResponse;
+import com.sdacodecoolproject.usersmanager.application.constant.SecurityConstant;
+import com.sdacodecoolproject.usersmanager.application.model.HttpResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AccessDeniedMessage implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception)
-            throws IOException, ServletException {
+            throws IOException {
         HttpResponse httpResponse =
                 new HttpResponse(HttpStatus.UNAUTHORIZED.value(),
                         HttpStatus.UNAUTHORIZED,

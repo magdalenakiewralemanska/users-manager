@@ -4,8 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.sdacodecoolproject.usersmanager.login.constant.SecurityConstant;
-import com.sdacodecoolproject.usersmanager.login.model.CurrentUser;
+import com.sdacodecoolproject.usersmanager.application.constant.SecurityConstant;
+import com.sdacodecoolproject.usersmanager.application.model.CurrentUser;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider {
-    @Value(value = "jwt.secret")
+    @Value(value = "${jwt.secret}")
     private static String secret;
 
     public String generateToken(CurrentUser currentUser){

@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.login.exception;
+package com.sdacodecoolproject.usersmanager.application.exception;
 
 public class UserNotFoundException extends Exception{
     public UserNotFoundException(String message) {

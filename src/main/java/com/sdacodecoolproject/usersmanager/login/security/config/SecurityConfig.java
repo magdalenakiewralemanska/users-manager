@@ -1,10 +1,10 @@
 package com.sdacodecoolproject.usersmanager.login.security.config;
 
-import com.sdacodecoolproject.usersmanager.login.constant.SecurityConstant;
+import com.sdacodecoolproject.usersmanager.application.constant.SecurityConstant;
 import com.sdacodecoolproject.usersmanager.login.security.token.AuthorizationFilter;
 import com.sdacodecoolproject.usersmanager.login.security.token.messages.AccessDeniedMessage;
 import com.sdacodecoolproject.usersmanager.login.security.token.messages.AuthenticationForbiddenMessage;
-import com.sdacodecoolproject.usersmanager.login.service.UserServiceImpl;
+import com.sdacodecoolproject.usersmanager.login.service.LoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,11 +24,11 @@ public class SecurityConfig {
     private final AuthorizationFilter authorizationFilter;
     private final AuthenticationForbiddenMessage forbiddenMessage;
     private final AccessDeniedMessage accessDeniedMessage;
-    private final UserServiceImpl userService;
+    private final LoginService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public SecurityConfig(AuthorizationFilter authorizationFilter, AuthenticationForbiddenMessage forbiddenMessage,
-                          AccessDeniedMessage accessDeniedMessage, UserServiceImpl userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+                          AccessDeniedMessage accessDeniedMessage, LoginService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.authorizationFilter = authorizationFilter;
         this.forbiddenMessage = forbiddenMessage;
         this.accessDeniedMessage = accessDeniedMessage;

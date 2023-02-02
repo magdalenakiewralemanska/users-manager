@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.login.model;
+package com.sdacodecoolproject.usersmanager.application.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

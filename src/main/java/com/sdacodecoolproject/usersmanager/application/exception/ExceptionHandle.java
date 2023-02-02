@@ -1,7 +1,7 @@
-package com.sdacodecoolproject.usersmanager.login.exception;
+package com.sdacodecoolproject.usersmanager.application.exception;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.sdacodecoolproject.usersmanager.login.model.HttpResponse;
+import com.sdacodecoolproject.usersmanager.application.model.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

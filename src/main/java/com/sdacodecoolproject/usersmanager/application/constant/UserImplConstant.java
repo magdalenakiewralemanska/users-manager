@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.login.constant;
+package com.sdacodecoolproject.usersmanager.application.constant;
 
 public class UserImplConstant {
     public static final String USERNAME_ALREADY_EXISTS = "This username already exists. Choose another one.";

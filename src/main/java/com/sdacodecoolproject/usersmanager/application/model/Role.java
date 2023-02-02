@@ -1,6 +1,6 @@
-package com.sdacodecoolproject.usersmanager.login.model;
+package com.sdacodecoolproject.usersmanager.application.model;
 
-import com.sdacodecoolproject.usersmanager.login.constant.Authorities;
+import com.sdacodecoolproject.usersmanager.application.constant.Authorities;
 
 import java.util.List;
 
