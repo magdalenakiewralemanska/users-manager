@@ -9,7 +9,7 @@ public enum Role {
     ROLE_MODERATOR(Authorities.MODERATOR_AUTHORITIES),
     ROLE_ADMIN(Authorities.ADMIN_AUTHORITIES);
 
-    private List<String> authorities;
+    private final List<String> authorities;
 
     Role(List<String> authorities) {
         this.authorities = authorities;

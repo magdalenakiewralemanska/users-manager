@@ -4,7 +4,7 @@ import com.sdacodecoolproject.usersmanager.login.constant.SecurityConstant;
 import com.sdacodecoolproject.usersmanager.login.security.token.AuthorizationFilter;
 import com.sdacodecoolproject.usersmanager.login.security.token.messages.AccessDeniedMessage;
 import com.sdacodecoolproject.usersmanager.login.security.token.messages.AuthenticationForbiddenMessage;
-import com.sdacodecoolproject.usersmanager.login.service.impl.UserServiceImpl;
+import com.sdacodecoolproject.usersmanager.login.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
