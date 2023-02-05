@@ -1,10 +1,10 @@
-package com.sdacodecoolproject.usersmanager.login.security.config;
+package com.sdacodecoolproject.usersmanager.user.login.security.config;
 
 import com.sdacodecoolproject.usersmanager.application.constant.SecurityConstant;
-import com.sdacodecoolproject.usersmanager.login.security.token.AuthorizationFilter;
-import com.sdacodecoolproject.usersmanager.login.security.token.messages.AccessDeniedMessage;
-import com.sdacodecoolproject.usersmanager.login.security.token.messages.AuthenticationForbiddenMessage;
-import com.sdacodecoolproject.usersmanager.login.service.LoginService;
+import com.sdacodecoolproject.usersmanager.user.login.security.token.AuthorizationFilter;
+import com.sdacodecoolproject.usersmanager.user.login.security.token.messages.AccessDeniedMessage;
+import com.sdacodecoolproject.usersmanager.user.login.security.token.messages.AuthenticationForbiddenMessage;
+import com.sdacodecoolproject.usersmanager.user.login.service.LoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

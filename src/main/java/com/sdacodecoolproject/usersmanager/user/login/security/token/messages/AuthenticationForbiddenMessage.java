@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.login.security.token.messages;
+package com.sdacodecoolproject.usersmanager.user.login.security.token.messages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdacodecoolproject.usersmanager.application.constant.SecurityConstant;

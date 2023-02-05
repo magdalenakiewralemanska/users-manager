@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.application.model;
+package com.sdacodecoolproject.usersmanager.user.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,10 +32,8 @@ public class User implements Serializable {
 
     private String username;
     private String email;
-    private String password;
 
-    @Column(name = "image-url")
-    private String imageUrl;
+    private String password;
 
     @Column(name = "last_login_date")
     private Date lastLoginDate;

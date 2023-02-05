@@ -1,5 +1,6 @@
-package com.sdacodecoolproject.usersmanager.application.model;
+package com.sdacodecoolproject.usersmanager.user.login;
 
+import com.sdacodecoolproject.usersmanager.user.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,4 +50,5 @@ public class CurrentUser implements UserDetails {
     public boolean isEnabled() {
         return this.user.isActive();
     }
+
 }

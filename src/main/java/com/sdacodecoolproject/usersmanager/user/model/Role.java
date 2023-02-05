@@ -1,4 +1,4 @@
-package com.sdacodecoolproject.usersmanager.application.model;
+package com.sdacodecoolproject.usersmanager.user.model;
 
 import com.sdacodecoolproject.usersmanager.application.constant.Authorities;
 

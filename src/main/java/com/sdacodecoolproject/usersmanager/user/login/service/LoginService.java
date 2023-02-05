@@ -1,10 +1,10 @@
-package com.sdacodecoolproject.usersmanager.login.service;
+package com.sdacodecoolproject.usersmanager.user.login.service;
 
-import com.sdacodecoolproject.usersmanager.application.constant.UserImplConstant;
-import com.sdacodecoolproject.usersmanager.application.model.CurrentUser;
-import com.sdacodecoolproject.usersmanager.application.repository.UserRepository;
+import com.sdacodecoolproject.usersmanager.application.constant.UserServicesConstant;
+import com.sdacodecoolproject.usersmanager.user.login.CurrentUser;
+import com.sdacodecoolproject.usersmanager.user.repository.UserRepository;
 
-import com.sdacodecoolproject.usersmanager.application.model.User;
+import com.sdacodecoolproject.usersmanager.user.model.User;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,13 +31,13 @@ public class LoginService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username);
         if(user == null){
-            logger.error(UserImplConstant.NO_USER_FOUND_BY_USERNAME + username);
-            throw new UsernameNotFoundException(UserImplConstant.NO_USER_FOUND_BY_USERNAME + username);
+            logger.error(UserServicesConstant.NO_USER_FOUND_BY_USERNAME + username);
+            throw new UsernameNotFoundException(UserServicesConstant.NO_USER_FOUND_BY_USERNAME + username);
         } else {
             user.setLastLoginDisplay(user.getLastLoginDate());
             user.setLastLoginDate(new Date());
             userRepository.save(user);
-            logger.info(UserImplConstant.FOUND_USER_BY_USERNAME + username);
+            logger.info(UserServicesConstant.FOUND_USER_BY_USERNAME + username);
             return new CurrentUser(user);
         }
     }
