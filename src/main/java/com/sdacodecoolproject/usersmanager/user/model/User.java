@@ -52,5 +52,5 @@ public class User implements Serializable {
     private boolean isActive;
 
     @Column(name = "actual_account_status")
-    private boolean isNotLocked;
+    private boolean isNonLocked;
 }

@@ -6,6 +6,7 @@ import com.sdacodecoolproject.usersmanager.application.exception.ExceptionHandle
 import com.sdacodecoolproject.usersmanager.application.exception.UserNotFoundException;
 import com.sdacodecoolproject.usersmanager.application.exception.UsernameExistException;
 import com.sdacodecoolproject.usersmanager.application.model.HttpResponse;
+import com.sdacodecoolproject.usersmanager.user.dto.UserDto;
 import com.sdacodecoolproject.usersmanager.user.model.User;
 import com.sdacodecoolproject.usersmanager.user.repository.UserRepository;
 import com.sdacodecoolproject.usersmanager.user.service.CrudUserService;
@@ -29,30 +30,14 @@ public class UserController extends ExceptionHandle {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User> saveNewUser(@RequestParam("firstName") String firstName,
-                                           @RequestParam("lastName") String lastName,
-                                           @RequestParam("username") String username,
-                                           @RequestParam("email") String email,
-                                           @RequestParam("password") String password,
-                                           @RequestParam("role") String role,
-                                           @RequestParam("isNonLocked") String isNonLocked,
-                                           @RequestParam("isActive") String isActive) throws UserNotFoundException, EmailExistException, UsernameExistException {
-        User newUser = crudUserService.addNewUser(firstName, lastName, username, email, password, role,
-                Boolean.parseBoolean(isNonLocked),
-                Boolean.parseBoolean(isActive));
+    public ResponseEntity<User> saveNewUser(@RequestBody UserDto userDto) throws UserNotFoundException, EmailExistException, UsernameExistException {
+        User newUser = crudUserService.addNewUser(userDto);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestParam("currentUsername") String currentUsername,
-                                           @RequestParam("firstName") String firstName,
-                                           @RequestParam("lastName") String lastName,
-                                           @RequestParam("username") String username,
-                                           @RequestParam("email") String email,
-                                           @RequestParam("isActive") String isActive,
-                                           @RequestParam("isNonLocked") String isNonLocked,
-                                           @RequestParam("role") String role) throws UserNotFoundException, EmailExistException, UsernameExistException {
-        User updatedUser = crudUserService.updateUser(currentUsername, firstName, lastName, username, email, Boolean.parseBoolean(isActive), Boolean.parseBoolean(isNonLocked), role);
+    public ResponseEntity<User> updateUser(@RequestBody UserDto userDto) throws UserNotFoundException, EmailExistException, UsernameExistException {
+        User updatedUser = crudUserService.updateUser(userDto);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 

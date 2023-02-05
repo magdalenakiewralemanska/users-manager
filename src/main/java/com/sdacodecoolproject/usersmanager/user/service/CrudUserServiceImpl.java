@@ -3,6 +3,8 @@ package com.sdacodecoolproject.usersmanager.user.service;
 import com.sdacodecoolproject.usersmanager.application.exception.EmailExistException;
 import com.sdacodecoolproject.usersmanager.application.exception.UserNotFoundException;
 import com.sdacodecoolproject.usersmanager.application.exception.UsernameExistException;
+import com.sdacodecoolproject.usersmanager.user.dto.UserBuilder;
+import com.sdacodecoolproject.usersmanager.user.dto.UserDto;
 import com.sdacodecoolproject.usersmanager.user.helpers.IdGenerator;
 import com.sdacodecoolproject.usersmanager.user.model.Role;
 import com.sdacodecoolproject.usersmanager.user.model.User;
@@ -35,21 +37,22 @@ public class CrudUserServiceImpl implements CrudUserService {
     }
 
     @Override
-    public User addNewUser(String firstName, String lastName, String username, String email, String password, String role, boolean isNonLocked, boolean isActive)
+    public User addNewUser(UserDto userDto)
             throws UserNotFoundException, EmailExistException, UsernameExistException {
-        checker.checkThatNewUsernameAndEmailNotRepeat(StringUtils.EMPTY, username, email);
-        User user = new User();
-        user.setUserIdNumber(generator.generateUserId());
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setRegistrationDate(new Date());
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setActive(isActive);
-        user.setNotLocked(isNonLocked);
-        user.setRolePermissions(getRoleEnumName(role).name());
-        user.setAuthorities(getRoleEnumName(role).getAuthorities());
+        checker.checkThatNewUsernameAndEmailNotRepeat(StringUtils.EMPTY, userDto.getUsername(), userDto.getEmail());
+        User user = new UserBuilder()
+                .withUserIdNumber(generator.generateUserId())
+                .withFirstName(userDto.getFirstName())
+                .withLastName(userDto.getLastName())
+                .withEmail(userDto.getEmail())
+                .withPassword(passwordEncoder.encode(userDto.getPassword()))
+                .withUsername(userDto.getUsername())
+                .withRegistrationDate(new Date())
+                .withIsActive(userDto.isActive())
+                .withIsNonLocked(userDto.isNonLocked())
+                .withRolePermissions(getRoleEnumName(userDto.getRolePermissions()).name())
+                .withAuthorities(getRoleEnumName(userDto.getRolePermissions()).getAuthorities())
+                .build();
         userRepository.save(user);
         return user;
     }
@@ -59,18 +62,19 @@ public class CrudUserServiceImpl implements CrudUserService {
     }
 
     @Override
-    public User updateUser(String currentUsername, String firstName, String lastName,  String username, String email, boolean isActive, boolean isNonLocked, String role )
+    public User updateUser(UserDto userDto )
             throws UserNotFoundException, EmailExistException, UsernameExistException {
-        User currentUser = checker.checkThatNewUsernameAndEmailNotRepeat(currentUsername, username, email);
-        currentUser.setFirstName(firstName);
-        currentUser.setLastName(lastName);
+        User userById = userRepository.findById(userDto.getId()).get();
+        User currentUser = checker.checkThatNewUsernameAndEmailNotRepeat(userById.getUsername(), userDto.getUsername(), userDto.getEmail());
+        currentUser.setFirstName(userDto.getFirstName());
+        currentUser.setLastName(userDto.getLastName());
         currentUser.setRegistrationDate(new Date());
-        currentUser.setUsername(username);
-        currentUser.setEmail(email);
-        currentUser.setActive(isActive);
-        currentUser.setNotLocked(isNonLocked);
-        currentUser.setRolePermissions(getRoleEnumName(role).name());
-        currentUser.setAuthorities(getRoleEnumName(role).getAuthorities());
+        currentUser.setUsername(userDto.getUsername());
+        currentUser.setEmail(userDto.getEmail());
+        currentUser.setActive(userDto.isActive());
+        currentUser.setNonLocked(userDto.isNonLocked());
+        currentUser.setRolePermissions(getRoleEnumName(userDto.getRolePermissions()).name());
+        currentUser.setAuthorities(getRoleEnumName(userDto.getRolePermissions()).getAuthorities());
         userRepository.save(currentUser);
         return currentUser;
     }

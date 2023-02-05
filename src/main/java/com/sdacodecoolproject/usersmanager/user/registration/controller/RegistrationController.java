@@ -4,6 +4,7 @@ import com.sdacodecoolproject.usersmanager.application.exception.EmailExistExcep
 import com.sdacodecoolproject.usersmanager.application.exception.ExceptionHandle;
 import com.sdacodecoolproject.usersmanager.application.exception.UserNotFoundException;
 import com.sdacodecoolproject.usersmanager.application.exception.UsernameExistException;
+import com.sdacodecoolproject.usersmanager.user.dto.UserDto;
 import com.sdacodecoolproject.usersmanager.user.model.User;
 import com.sdacodecoolproject.usersmanager.user.registration.service.RegistrationService;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,8 @@ public class RegistrationController extends ExceptionHandle {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) throws UserNotFoundException, EmailExistException, UsernameExistException {
-        User loginUser = registrationService.register(user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword());
+    public ResponseEntity<User> register(@RequestBody UserDto userDto) throws UserNotFoundException, EmailExistException, UsernameExistException {
+        User loginUser = registrationService.register(userDto);
         return new ResponseEntity<>(loginUser, HttpStatus.OK);
     }
 }

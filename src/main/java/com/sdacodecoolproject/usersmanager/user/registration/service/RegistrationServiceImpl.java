@@ -3,6 +3,8 @@ package com.sdacodecoolproject.usersmanager.user.registration.service;
 import com.sdacodecoolproject.usersmanager.application.exception.EmailExistException;
 import com.sdacodecoolproject.usersmanager.application.exception.UserNotFoundException;
 import com.sdacodecoolproject.usersmanager.application.exception.UsernameExistException;
+import com.sdacodecoolproject.usersmanager.user.dto.UserBuilder;
+import com.sdacodecoolproject.usersmanager.user.dto.UserDto;
 import com.sdacodecoolproject.usersmanager.user.helpers.IdGenerator;
 import com.sdacodecoolproject.usersmanager.user.helpers.UsernameAndEmailRepeatingChecker;
 import com.sdacodecoolproject.usersmanager.user.model.Role;
@@ -21,8 +23,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserRepository userRepository;
     private final UsernameAndEmailRepeatingChecker checker;
     private final IdGenerator generator;
-
     private final BCryptPasswordEncoder passwordEncoder;
+
 
     public RegistrationServiceImpl(UserRepository userRepository, UsernameAndEmailRepeatingChecker checker,
                                    IdGenerator generator, BCryptPasswordEncoder passwordEncoder) {
@@ -30,28 +32,28 @@ public class RegistrationServiceImpl implements RegistrationService {
         this.checker = checker;
         this.generator = generator;
         this.passwordEncoder = passwordEncoder;
+
     }
 
     @Override
-    public User register(String firstName, String lastName, String email, String username, String password)
+    public User register(UserDto userDto)
             throws UserNotFoundException, EmailExistException, UsernameExistException {
-        checker.checkThatNewUsernameAndEmailNotRepeat(StringUtils.EMPTY, username, email);
-        User user = new User();
-        user.setUserIdNumber(generator.generateUserId());
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setRegistrationDate(new Date());
-        user.setPassword(passwordEncoder.encode(password));
-        user.setActive(true);
-        user.setNotLocked(true);
-        user.setRolePermissions(Role.ROLE_USER.name());
-        user.setAuthorities(Role.ROLE_USER.getAuthorities());
+        checker.checkThatNewUsernameAndEmailNotRepeat(StringUtils.EMPTY, userDto.getUsername(), userDto.getEmail());
+        User user = new UserBuilder()
+                .withUserIdNumber(generator.generateUserId())
+                .withFirstName(userDto.getFirstName())
+                .withLastName(userDto.getLastName())
+                .withEmail(userDto.getEmail())
+                .withPassword(passwordEncoder.encode(userDto.getPassword()))
+                .withUsername(userDto.getUsername())
+                .withRegistrationDate(new Date())
+                .withIsActive(true)
+                .withIsNonLocked(true)
+                .withRolePermissions(Role.ROLE_USER.name())
+                .withAuthorities(Role.ROLE_USER.getAuthorities())
+                .build();
         userRepository.save(user);
         return user;
     }
-
-
 
 }
