@@ -18,7 +18,7 @@ In the future, it is also planned to create such functionalities as:
 1.	Creating possibility to add photo by user and change that photo.
 2.	Creating password recovery option via email.
 
-### Technologies
+# Technologies:
 ***
 <div align="center">
 	<code><img height="50" src="https://user-images.githubusercontent.com/25181517/192108890-200809d1-439c-4e23-90d3-b090cf9a4eea.png" alt="InteliJ" title="InteliJ" /></code>
